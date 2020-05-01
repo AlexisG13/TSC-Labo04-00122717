@@ -1,39 +1,39 @@
 void createLocalA(Matrix &A,mesh m){
     float t = m.getParameter(T);
-    A.at(0).at(0) += -(t)/8;  A.at(0).at(1) += (t)/8;
-    A.at(1).at(0) += -(t)/8;  A.at(1).at(1) += (t)/8;
+    A.at(0).at(0) += -t/8;  A.at(0).at(1) += t/8;
+    A.at(1).at(0) += -t/8;  A.at(1).at(1) += t/8;
 }
 
 void createLocalB(Matrix &B,mesh m){
     float l = m.getParameter(ELEMENT_LENGTH);
     float k = m.getParameter(K);
-    B.at(0).at(0) += k/l;      B.at(0).at(1) += -(k)/l;
-    B.at(1).at(0) += -(k)/l;     B.at(1).at(1) += k/l;
+    B.at(0).at(0) += k/l;      B.at(0).at(1) += -k/l;
+    B.at(1).at(0) += -k/l;     B.at(1).at(1) += k/l;
 }
 
 void createLocalC(Matrix &C,mesh m){
     float lambda = m.getParameter(LAMBDA);
-    C.at(0).at(0) += -(lambda)/3;    C.at(0).at(1) += (lambda)/3;
-    C.at(1).at(0) += -(lambda)/3;    C.at(1).at(1) += (lambda)/3;
+    C.at(0).at(0) += -lambda/3;    C.at(0).at(1) += lambda/3;
+    C.at(1).at(0) += -lambda/3;    C.at(1).at(1) += lambda/3;
 }
 
 void createLocalD(Matrix &D,mesh m){
     float v = m.getParameter(V);
     float l = m.getParameter(ELEMENT_LENGTH);
-    D.at(0).at(0) += v/l;  D.at(0).at(1) += -(v)/l;
-    D.at(1).at(0) += -(v)/l;  D.at(1).at(1) += v/l;
+    D.at(0).at(0) += v/l;  D.at(0).at(1) += -v/l;
+    D.at(1).at(0) += -v/l;  D.at(1).at(1) += v/l;
 }
 
 void createLocalE(Matrix &E,mesh m){
     float alpha = m.getParameter(ALPHA);
-    E.at(0).at(0) += -(3*alpha)/2;  E.at(0).at(1) += (3*alpha)/2;
-    E.at(1).at(0) += -(3*alpha)/2;  E.at(1).at(1) += (3*alpha)/2;
+    E.at(0).at(0) += -1.5 * alpha;  E.at(0).at(1) += 1.5 * alpha;
+    E.at(1).at(0) += -1.5 * alpha;  E.at(1).at(1) += 1.5 * alpha;
 }
 
 void createLocalF(Matrix &F,mesh m){
     float delta = m.getParameter(DELTA);
-    F.at(0).at(0) += -(delta)/2;  F.at(0).at(1) += (delta)/2;
-    F.at(1).at(0) += -(delta)/2;  F.at(1).at(1) += (delta)/2;
+    F.at(0).at(0) += -0.5 * delta;  F.at(0).at(1) += 0.5 * delta;
+    F.at(1).at(0) += -0.5 * delta;  F.at(1).at(1) += 0.5 * delta;
 }
 
 Matrix createLocalK(int element,mesh &m){
@@ -109,6 +109,11 @@ void assemblyK(element e,Matrix localK,Matrix &K,int nnodes){
     K.at(index3).at(index2) += localK.at(2).at(1);
     K.at(index4).at(index1) += localK.at(3).at(0);
     K.at(index4).at(index2) += localK.at(3).at(1);
+
+    K.at(index3).at(index3) += localK.at(2).at(2);
+    K.at(index3).at(index4) += localK.at(2).at(3);
+    K.at(index4).at(index3) += localK.at(3).at(2);
+    K.at(index4).at(index4) += localK.at(3).at(3);
 
 }
 
